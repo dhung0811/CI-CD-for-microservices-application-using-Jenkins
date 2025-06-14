@@ -1,0 +1,149 @@
+.
+├── LICENSE
+├── README.md
+├── cart
+│   ├── Dockerfile
+│   ├── package.json
+│   └── server.js
+├── catalogue
+│   ├── Dockerfile
+│   ├── package.json
+│   └── server.js
+├── dispatch
+│   ├── Dockerfile
+│   ├── docker-compose.yaml
+│   └── main.go
+├── docker-compose-load.yaml
+├── docker-compose.yaml
+├── file.txt
+├── fluentd
+│   ├── Docker-Compose
+│   │   ├── README.md
+│   │   ├── fluent.conf
+│   │   └── run.sh
+│   ├── Dockerfile
+│   ├── Kubernetes
+│   │   ├── README.md
+│   │   └── fluentd.yaml
+│   ├── README.md
+│   └── build.sh
+├── load-gen
+│   ├── Dockerfile
+│   ├── README.md
+│   ├── build.sh
+│   ├── entrypoint.sh
+│   ├── load-gen.sh
+│   ├── requirements.txt
+│   └── robot-shop.py
+├── mongo
+│   ├── Dockerfile
+│   ├── catalogue.js
+│   └── users.js
+├── mysql
+│   ├── Dockerfile
+│   ├── config.sh
+│   ├── convert.sh
+│   └── scripts
+│       ├── 10-dump.sql.gz
+│       ├── 20-ratings.sql
+│       └── 99-finished.sh
+├── payment
+│   ├── Dockerfile
+│   ├── docker-compose.yaml
+│   ├── payment.ini
+│   ├── payment.py
+│   ├── rabbitmq.py
+│   └── requirements.txt
+├── pullbaseimages.sh
+├── ratings
+│   ├── Dockerfile
+│   ├── html
+│   │   ├── composer.json
+│   │   ├── index.php
+│   │   ├── info.php
+│   │   ├── src
+│   │   │   ├── Controller
+│   │   │   │   ├── HealthController.php
+│   │   │   │   └── RatingsApiController.php
+│   │   │   ├── Database.php
+│   │   │   ├── EventListener
+│   │   │   │   └── InstanaDataCenterListener.php
+│   │   │   ├── Integration
+│   │   │   │   └── InstanaHeadersLoggingProcessor.php
+│   │   │   ├── Kernel.php
+│   │   │   └── Service
+│   │   │       ├── CatalogueService.php
+│   │   │       ├── HealthCheckService.php
+│   │   │       └── RatingsService.php
+│   │   └── var
+│   │       ├── cache
+│   │       └── log
+│   └── status.conf
+├── shipping
+│   ├── Dockerfile
+│   ├── pom.xml
+│   └── src
+│       └── main
+│           ├── java
+│           │   └── com
+│           │       └── instana
+│           │           └── robotshop
+│           │               └── shipping
+│           │                   ├── Calculator.java
+│           │                   ├── CartHelper.java
+│           │                   ├── City.java
+│           │                   ├── CityRepository.java
+│           │                   ├── Code.java
+│           │                   ├── CodeRepository.java
+│           │                   ├── Controller.java
+│           │                   ├── JpaConfig.java
+│           │                   ├── RetryableDataSource.java
+│           │                   ├── Ship.java
+│           │                   └── ShippingServiceApplication.java
+│           └── resources
+│               └── application.properties
+├── user
+│   ├── Dockerfile
+│   ├── package.json
+│   └── server.js
+└── web
+    ├── Dockerfile
+    ├── default.conf.template
+    ├── entrypoint.sh
+    └── static
+        ├── cart.html
+        ├── css
+        │   ├── auto-complete.css
+        │   └── style.css
+        ├── empty.html
+        ├── eum-tmpl.html
+        ├── images
+        │   ├── Aplha.png
+        │   ├── CNA.png
+        │   ├── EMM.png
+        │   ├── EPE.png
+        │   ├── Ewooid.png
+        │   ├── HPTD.png
+        │   ├── RED.png
+        │   ├── RMC.png
+        │   ├── SHCE.png
+        │   ├── STAN-1.png
+        │   ├── UHJ.png
+        │   ├── Watson.png
+        │   └── placeholder.png
+        ├── index.html
+        ├── js
+        │   ├── auto-complete.js
+        │   └── controller.js
+        ├── login.html
+        ├── media
+        │   ├── graph.png
+        │   ├── instana_icon_square.png
+        │   └── stan.png
+        ├── payment.html
+        ├── product.html
+        ├── search.html
+        ├── shipping.html
+        └── splash.html
+
+38 directories, 109 files
