@@ -50,7 +50,7 @@ pipeline {
                         def fullImage = "${REPO}/${img}:${TAG}"
                         sh """
                             echo " Scanning ${fullImage}..."
-                            trivy image --severity HIGH,CRITICAL --no-progress --exit-code 0 ${fullImage} || echo "⚠️ Scan issues in ${fullImage}"
+                            trivy image --severity HIGH,CRITICAL --no-progress --exit-code 0 ${fullImage} || echo " Scan issues in ${fullImage}"
                         """
                     }
                 }
