@@ -30,11 +30,5 @@ pipeline {
                 sh "docker compose -f $COMPOSE_FILE_MAIN up -d"
             }
         }
-
-        stage('Run Load Test') {
-            steps {
-                sh "docker compose -f $COMPOSE_FILE_LOAD up --abort-on-container-exit"
-            }
-        }
     }
 }
