@@ -17,7 +17,7 @@ pipeline {
         stage("Docker Build & Push"){
             steps{
                 script{
-                   withDockerRegistry(credentialsId: 'Docker', toolName: 'Docker'){
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'Docker'){
                        sh "docker compose -f $COMPOSE_FILE_MAIN build"
                        sh "docker compose -f $COMPOSE_FILE_LOAD build"
                        sh "docker compose -f $COMPOSE_FILE_MAIN push || true"
