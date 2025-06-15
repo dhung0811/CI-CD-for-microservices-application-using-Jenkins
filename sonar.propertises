@@ -1,0 +1,7 @@
+sonar.projectKey=dhung0811
+sonar.organization=dhung0811
+sonar.host.url=https://sonarcloud.io
+sonar.login=sonar
+
+# Optional:
+sonar.sources=src
