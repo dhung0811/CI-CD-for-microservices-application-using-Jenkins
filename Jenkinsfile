@@ -14,14 +14,12 @@ pipeline {
                     git branch: 'main', url: 'https://github.com/dhung0811/CI-CD-for-microservices-application-using-Jenkins.git'
             }
         }
-        stage("Docker Build & Push"){
-            steps{
-                script{
-                   withDockerRegistry(credentialsId: 'docker', toolName: 'Docker'){
-                       sh "docker compose -f $COMPOSE_FILE_MAIN build"
-                       sh "docker compose -f $COMPOSE_FILE_LOAD build"
-                       sh "docker compose -f $COMPOSE_FILE_MAIN push || true"
-                       sh "docker compose -f $COMPOSE_FILE_LOAD push || true"
+        stage("Docker Build & Push") {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'Docker') {
+                        sh "docker compose -f $COMPOSE_FILE_MAIN -f $COMPOSE_FILE_LOAD build"
+                        sh "docker compose -f $COMPOSE_FILE_MAIN -f $COMPOSE_FILE_LOAD push || true"
                     }
                 }
             }

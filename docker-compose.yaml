@@ -1,4 +1,4 @@
-version: '3'
+
 services:
   mongodb:
     build:
@@ -169,4 +169,3 @@ services:
 
 networks:
   robot-shop:
-
