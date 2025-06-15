@@ -14,12 +14,6 @@ pipeline {
                     git branch: 'main', url: 'https://github.com/dhung0811/CI-CD-for-microservices-application-using-Jenkins.git'
             }
         }
-        stage('Build Images') {
-            steps {
-                sh "docker compose -f $COMPOSE_FILE_MAIN build"
-                sh "docker compose -f $COMPOSE_FILE_LOAD build"
-            }
-        }
         stage("Docker Build & Push"){
             steps{
                 script{
