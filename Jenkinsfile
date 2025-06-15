@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'jenkins-agent'
+    }
     environment {
         REPO = "dhung0811/robot-shop"
         TAG = "latest"
