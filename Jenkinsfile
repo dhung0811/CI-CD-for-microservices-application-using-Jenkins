@@ -3,7 +3,7 @@ pipeline {
         label 'jenkins-agent'
     }
     environment {
-        REPO = "dhung0811/robot-shop"
+        REPO = "dhung0811"
         TAG = "latest"
         COMPOSE_FILE_MAIN = "docker-compose.yaml"
         COMPOSE_FILE_LOAD = "docker-compose-load.yaml"
