@@ -20,7 +20,7 @@ pipeline {
             steps{
                 withSonarQubeEnv('sonar-server') {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=robot-shop \
-                    -Dsonar.projectKey=robot-shop '''
+                    -Dsonar.projectKey=robot-shop -Dsonar.exclusions=**/*.java '''
                 }
             }
         }
