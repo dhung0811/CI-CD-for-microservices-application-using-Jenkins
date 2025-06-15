@@ -16,6 +16,8 @@ RUN pip install -r requirements.txt
 
 COPY entrypoint.sh /load/
 COPY robot-shop.py /load/
+RUN chmod +x /load/entrypoint.sh
 
 CMD ["./entrypoint.sh"]
+
 
