@@ -27,7 +27,7 @@ pipeline {
 
         stage('Deploy Services') {
             steps {
-                sh "docker compose -f $COMPOSE_FILE_MAIN -f $COMPOSE_FILE_LOAD up 2>&1 &"
+                sh "docker compose -f $COMPOSE_FILE_MAIN -f $COMPOSE_FILE_LOAD up -d"
             }
         }
     }
