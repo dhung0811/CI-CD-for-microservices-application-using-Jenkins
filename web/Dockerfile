@@ -3,6 +3,7 @@ ARG KEY
 
 WORKDIR /instana
 
+
 RUN apk add --update --no-cache wget
 
 ENV ARTI_PATH='artifact-public.instana.io/artifactory/shared/com/instana/nginx_tracing/'
@@ -36,8 +37,8 @@ ENV CATALOGUE_HOST=catalogue \
 # Instana tracing
 COPY --from=build /instana/*.so /tmp/
 
-COPY entrypoint.sh /root/
-ENTRYPOINT ["/root/entrypoint.sh"]
+COPY entrypoint.sh /root/entrypoint.sh
+RUN chmod +x /root/entrypoint.sh
 
 COPY default.conf.template /etc/nginx/conf.d/default.conf.template
 COPY static /usr/share/nginx/html
