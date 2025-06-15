@@ -42,11 +42,5 @@ pipeline {
                 sh "docker compose -f $COMPOSE_FILE_LOAD up --abort-on-container-exit"
             }
         }
-
-        post {
-            always {
-                echo 'Deploy successfully...'
-            }
-        }
     }
 }
