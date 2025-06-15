@@ -7,24 +7,19 @@ pipeline {
         TAG = "latest"
         COMPOSE_FILE_MAIN = "docker-compose.yaml"
         COMPOSE_FILE_LOAD = "docker-compose-load.yaml"
-        SONAR_TOKEN = credentials('sonar') // Jenkins Credentials ID
-    }
-    tools {
-        sonarScanner 'SonarScanner 7.x' // Your scanner name
-    }
+        SCANNER_HOME=tool 'sonar-scanner'
+        NVD_API_KEY = credentials('NVD_API_KEY'
     stages{
         stage('Checkout from Git'){
             steps{
                     git branch: 'main', url: 'https://github.com/dhung0811/CI-CD-for-microservices-application-using-Jenkins.git'
             }
         }
-        stage('SonarCloud Analysis') {
-            steps {
-                script {
-                    def scannerHome = tool 'SonarScanner 7.x'
-                    withSonarQubeEnv('SonarCloud') {
-                        sh "${scannerHome}/bin/sonar-scanner"
-                    }
+        stage("Sonarqube Analysis "){
+            steps{
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=robot-shop \
+                    -Dsonar.projectKey=robot-shop '''
                 }
             }
         }
