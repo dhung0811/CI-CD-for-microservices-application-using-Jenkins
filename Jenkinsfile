@@ -8,7 +8,8 @@ pipeline {
         COMPOSE_FILE_MAIN = "docker-compose.yaml"
         COMPOSE_FILE_LOAD = "docker-compose-load.yaml"
         SCANNER_HOME=tool 'sonar-scanner'
-        NVD_API_KEY = credentials('NVD_API_KEY'
+        NVD_API_KEY = credentials('NVD_API_KEY')
+    }
     stages{
         stage('Checkout from Git'){
             steps{
