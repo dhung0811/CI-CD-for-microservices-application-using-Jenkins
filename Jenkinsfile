@@ -6,6 +6,7 @@ pipeline {
         COMPOSE_FILE_MAIN = "docker-compose.yaml"
         COMPOSE_FILE_LOAD = "docker-compose-load.yaml"
     }
+    stages{
     stage('Checkout from Git'){
         steps{
                 git branch: 'main', url: 'https://github.com/dhung0811/CI-CD-for-microservices-application-using-Jenkins.git'
@@ -46,5 +47,6 @@ pipeline {
         always {
             echo 'Deploy successfully...'
         }
+    }
     }
 }
