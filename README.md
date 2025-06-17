@@ -60,7 +60,7 @@ Enable outbound requests from Gitlab to Jenkins. This is necessary for the webho
 
 ## Create and configure SonarQube Server
 Create and setup a SonarQube server to analyze the code quality of Stan's Robot Shop.
-![createdSonarQube](/img/createdSonarQube.png)
+![createdSonarQube](/img/CreatedSonarqube.png)
 Create new token in SonarQube for authentication. This token will be used to trigger the SonarQube analysis from Jenkins.
  - Go to `My Account` > `Security` > `Generate Tokens` and create a new token.
 ![sonarToken](/img/sonarToken.png)
@@ -72,7 +72,7 @@ Create a webhook in SonarQube to run in the Jenkins pipeline on code changes. In
 ## Configure Jenkins Server
 Go to `Manage Jenkins` > `Configure System` and configure the following:
 - **Gitlab**: Add the Gitlab server URL and the API token created in the previous step.
-![addGitlab](/img/addGitlab.png)
+![addGitlab](/img/addGitLab.png)
 - **SonarQube**: Add the SonarQube server URL and the token created in the previous step.
 ![sonarServer](/img/sonarServer.png)
 
