@@ -1,8 +1,10 @@
-# Sample Microservice Application
+# CI/CD Pipeline for Stan's Robot Shop
+
+This repository contains the source code from [Stan's Robot Shop](https://github.com/instana/robot-shop), a sample microservice application. The application is designed to demonstrate various technologies and practices in building and deploying microservices, including containerization, orchestration, and monitoring, based on the original [robot-shop](https://github.com/instana/robot-shop), you can get more information from the [Instana blog post](https://www.instana.com/blog/stans-robot-shop-sample-microservice-application/).
+
+The repository is used to build and deploy the application using a CI/CD pipeline. The pipeline automates the process of building, testing, and deploying the application to various environments, ensuring that changes can be delivered quickly and reliably.
 
 Stan's Robot Shop is a sample microservice application you can use as a sandbox to test and learn containerised application orchestration and monitoring techniques. It is not intended to be a comprehensive reference example of how to write a microservices application, although you will better understand some of those concepts by playing with Stan's Robot Shop. To be clear, the error handling is patchy and there is not any security built into the application.
-
-You can get more detailed information from my [blog post](https://www.instana.com/blog/stans-robot-shop-sample-microservice-application/) about this sample microservice application.
 
 This sample microservice application has been built using these technologies:
 - NodeJS ([Express](http://expressjs.com/))
@@ -17,112 +19,103 @@ This sample microservice application has been built using these technologies:
 - Nginx
 - AngularJS (1.x)
 
-The various services in the sample application already include all required Instana components installed and configured. The Instana components provide automatic instrumentation for complete end to end [tracing](https://docs.instana.io/core_concepts/tracing/), as well as complete visibility into time series metrics for all the technologies.
+The tools integrated into the CI/CD pipeline include:
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+- [Jenkins](https://www.jenkins.io/)
+- [Gitlab](https://about.gitlab.com/)
+- [sonarQube](https://www.sonarqube.org/)
+- [trivy](https://aquasecurity.github.io/trivy/)
 
-To see the application performance results in the Instana dashboard, you will first need an Instana account. Don't worry a [trial account](https://instana.com/trial?utm_source=github&utm_medium=robot_shop) is free.
 
-## Build from Source
-To optionally build from source (you will need a newish version of Docker to do this) use Docker Compose. Optionally edit the `.env` file to specify an alternative image registry and version tag; see the official [documentation](https://docs.docker.com/compose/env-file/) for more information.
+## Workflow
+The CI/CD pipeline is designed to automate the build, test, and deployment processes for Stan's Robot Shop. The workflow includes the following steps:
+![workflow](/img/workflow.png)
 
-To download the tracing module for Nginx, it needs a valid Instana agent key. Set this in the environment before starting the build.
+# Steps
+## Create Jenkins Server
+Create and setup a Jenkins server to manage the CI/CD pipeline. Install the necessary plugins for Docker, Git, and any other tools required for the pipeline.
 
-```shell
-$ export INSTANA_AGENT_KEY="<your agent key>"
-```
+Create a api token in Jenkins for authentication. This token will be used to trigger the pipeline from Gitlab.
+ - Go to `Manage Jenkins` > `Manage Users` > `Security` > `API Token` and create a new token.
+![jenkinsAPIToken](/img/jenkinsAPIToken.png)
 
-Now build all the images.
+## Create and configure Gitlab Server
+Create and setup a Gitlab server to host the source code repository for Stan's Robot Shop.
+![createdGitlab](/img/createdGitlab.png)
+Create a new project in Gitlab and push the source code to the repository. Configure the Gitlab CI/CD pipeline to trigger builds and tests on code changes.
+![repo](/img/repo.png)
+Go to the repository settings and create a webhook in Gitlab to trigger the Jenkins pipeline on code changes. In the URL field, enter the value with syntax `http://<username>:<token>@<IPofJenkins>:8080/job/<jobName>`.
 
-```shell
-$ docker-compose build
-```
 
-If you modified the `.env` file and changed the image registry, you need to push the images to that registry
+The token is the API token created in Jenkins, and the job name is the name of the Jenkins job that will be triggered.
+![webhook](/img/createWebhookFromGitlab.png)
 
-```shell
-$ docker-compose push
-```
+Also, create a personal access token in Gitlab to allow Jenkins to access the repository. Go to `Settings` > `Access Tokens` and create a new token with the required scopes.
+![createToken](/img/createToken.png)
 
-## Run Locally
-You can run it locally for testing.
+Enable outbound requests from Gitlab to Jenkins. This is necessary for the webhook to work correctly. Go to `Settings` > `General` and enable the `Outbound requests` option.
+![allowOutboundRequests](/img/allowOutboundRequest.png)
 
-If you did not build from source, don't worry all the images are on Docker Hub. Just pull down those images first using:
 
-```shell
-$ docker-compose pull
-```
+## Create and configure SonarQube Server
+Create and setup a SonarQube server to analyze the code quality of Stan's Robot Shop.
+![createdSonarQube](/img/createdSonarQube.png)
+Create new token in SonarQube for authentication. This token will be used to trigger the SonarQube analysis from Jenkins.
+ - Go to `My Account` > `Security` > `Generate Tokens` and create a new token.
+![sonarToken](/img/sonarToken.png)
 
-Fire up Stan's Robot Shop with:
+Create a webhook in SonarQube to run in the Jenkins pipeline on code changes. In the URL field, enter the URL of the Jenkins server.
 
-```shell
-$ docker-compose up
-```
+![CreateWebhook](/img/createWebhook.png)
 
-If you want to fire up some load as well:
+## Configure Jenkins Server
+Go to `Manage Jenkins` > `Configure System` and configure the following:
+- **Gitlab**: Add the Gitlab server URL and the API token created in the previous step.
+![addGitlab](/img/addGitlab.png)
+- **SonarQube**: Add the SonarQube server URL and the token created in the previous step.
+![sonarServer](/img/sonarServer.png)
 
-```shell
-$ docker-compose -f docker-compose.yaml -f docker-compose-load.yaml up
-```
+Go to `Manage Jenkins` > `Credentials` and add the following credentials:
+![crednetials](/img/credentials.png)
+- **gitlab**: Add the Gitlab personal access token created in the previous step.
+- **sonar**: Add the SonarQube token created in the previous step.
+- **docker**: Add the Docker Hub credentials to push the images to the Docker Hub repository.
+- **gitlab-user**: Add the Gitlab username to access the repository.
+- **NVD-API-KEY**: Add the NVD API key to access the NVD database for vulnerability scanning.
 
-If you are running it locally on a Linux host you can also run the Instana [agent](https://docs.instana.io/quick_start/agent_setup/container/docker/) locally, unfortunately the agent is currently not supported on Mac.
 
-There is also only limited support on ARM architectures at the moment.
+Connect the Jenkins agent to the Jenkins server. This can be done by installing the Jenkins agent on the machine where the pipeline will run and connecting it to the Jenkins server.
+![connectAgent](/img/connectAgent.png)
+![createdAgent](/img/createdAgent.png)
 
-## Marathon / DCOS
 
-The manifests for robotshop are in the *DCOS/* directory. These manifests were built using a fresh install of DCOS 1.11.0. They should work on a vanilla HA or single instance install.
 
-You may install Instana via the DCOS package manager, instructions are here: https://github.com/dcos/examples/tree/master/instana-agent/1.9
+## Create Jenkins Pipeline
+Create a new Jenkins pipeline job to build, test, and deploy Stan's Robot Shop.
+Go to `New Item` > `Pipeline` and enter a name for the job. Configure the pipeline to be triggered by the Gitlab webhook created in the previous step.
+![configPipeline](/img/configPipelineToBeTrigger.png)
+In the pipeline section, select `Pipeline script from SCM` and choose `Git`. Enter the Gitlab repository URL and the branch to build.
 
-## Kubernetes
-You can run Kubernetes locally using [minikube](https://github.com/kubernetes/minikube) or on one of the many cloud providers.
+![configurePipeline](/img/configPipeline.png)
 
-The Docker container images are all available on [Docker Hub](https://hub.docker.com/u/robotshop/).
+Go back to repository settings in Gitlab > `webhooks` and test the webhook to ensure it is working correctly. The webhook should trigger the Jenkins pipeline and start the build process.
+![testTrigger](/img/testTrigger.png)
 
-Install Stan's Robot Shop to your Kubernetes cluster using the [Helm](K8s/helm/README.md) chart.
+Save the pipeline configuration and run the pipeline to test the setup. The pipeline should trigger on code changes and run the build, test, and deployment steps.
+![donePipeline](/img/donePipeline.png)
 
-To deploy the Instana agent to Kubernetes, just use the [helm](https://github.com/instana/helm-charts) chart.
+See the analysis results in SonarQube.
+![sonarqubeResults](/img/sonarqubeResult.png)
 
-## Accessing the Store
-If you are running the store locally via *docker-compose up* then, the store front is available on localhost port 8080 [http://localhost:8080](http://localhost:8080/)
+The trivy scan results can be seen in the Jenkins console output.
+![trivyScan](/img/trivyScan.png)
 
-If you are running the store on Kubernetes via minikube then, find the IP address of Minikube and the Node Port of the web service.
+The images are pushed to the Docker Hub repository.
+![imagesPushed](/img/imagesPushed.png)
 
-```shell
-$ minikube ip
-$ kubectl get svc web
-```
+We can access to the application using the IP address of the Jenkins agent and the port 8080.
+![deploySuccessfully](/img/deploySuccessfully.png)
 
-If you are using a cloud Kubernetes / Openshift / Mesosphere then it will be available on the load balancer of that system.
 
-## Load Generation
-A separate load generation utility is provided in the `load-gen` directory. This is not automatically run when the application is started. The load generator is built with Python and [Locust](https://locust.io). The `build.sh` script builds the Docker image, optionally taking *push* as the first argument to also push the image to the registry. The registry and tag settings are loaded from the `.env` file in the parent directory. The script `load-gen.sh` runs the image, it takes a number of command line arguments. You could run the container inside an orchestration system (K8s) as well if you want to, an example descriptor is provided in K8s directory. For End-user Monitoring ,load is not automatically generated but by navigating through the Robotshop from the browser .For more details see the [README](load-gen/README.md) in the load-gen directory.  
-
-## Website Monitoring / End-User Monitoring
-
-### Docker Compose
-
-To enable Website Monioring / End-User Monitoring (EUM) see the official [documentation](https://docs.instana.io/website_monitoring/) for how to create a configuration. There is no need to inject the JavaScript fragment into the page, this will be handled automatically. Just make a note of the unique key and set the environment variable `INSTANA_EUM_KEY` and `INSTANA_EUM_REPORTING_URL` for the web image within `docker-compose.yaml`.
-
-### Kubernetes
-
-The Helm chart for installing Stan's Robot Shop supports setting the key and endpoint url required for website monitoring, see the [README](K8s/helm/README.md).
-
-## Prometheus
-
-The cart and payment services both have Prometheus metric endpoints. These are accessible on `/metrics`. The cart service provides:
-
-* Counter of the number of items added to the cart
-
-The payment services provides:
-
-* Counter of the number of items perchased
-* Histogram of the total number of items in each cart
-* Histogram of the total value of each cart
-
-To test the metrics use:
-
-```shell
-$ curl http://<host>:8080/api/cart/metrics
-$ curl http://<host>:8080/api/payment/metrics
-```
 
