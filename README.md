@@ -43,8 +43,7 @@ Create a api token in Jenkins for authentication. This token will be used to tri
 ## Create and configure Gitlab Server
 Create and setup a Gitlab server to host the source code repository for Stan's Robot Shop.
 ![createdGitlab](/img/createdGitlab.png)
-Create a new project in Gitlab and push the source code to the repository. Configure the Gitlab CI/CD pipeline to trigger builds and tests on code changes.
-![repo](/img/repo.png)
+Create a new project in Gitlab and push the source code to the repository.
 Go to the repository settings and create a webhook in Gitlab to trigger the Jenkins pipeline on code changes. In the URL field, enter the value with syntax `http://<username>:<token>@<IPofJenkins>:8080/job/<jobName>`.
 
 
